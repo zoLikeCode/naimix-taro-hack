@@ -10,6 +10,7 @@ from fastapi import FastAPI, HTTPException
 from logging.handlers import RotatingFileHandler
 from pydantic import BaseModel
 import uvicorn
+from api import *
 #from mistral_api import MistralChat, setup_logger
 
 
@@ -29,7 +30,7 @@ async def forecast():
     try:
         return {'forecast': "Its raining men, aliluya"}
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то наебнулос: {ex}")
+        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
 
 
@@ -44,7 +45,7 @@ async def summ_rec(request: Request_Summ_Reс):
     try:
         return {'summary': 'Что то будет написано по резюме'}
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то наебнулос: {ex}")
+        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
 
 
@@ -56,9 +57,9 @@ class summarize_tarot_spread(BaseModel):
 @app.post("/summarize_tarot_spread")
 async def summ_tarot(request: summarize_tarot_spread):
     try:
-        return {'summary': 'У тебя пиписька отвалится'}
+        return {'summary': 'У отвалится'}
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то наебнулос: {ex}")
+        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
         
 
 
@@ -72,7 +73,7 @@ async def full_tarot_spread(request: Request_Tarot_Spread):
     try:
         return {'tarot_spread': 'ДА ПРИБУДЕТ С ТОБОЙ СИЛА И СОЛНЦЕ НАД ТОБОЙ'}
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то наебнулос: {ex}")
+        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
 
 
@@ -84,9 +85,9 @@ class Request_Question_Tarot_Spread(BaseModel):
 @app.post("/question_tarot_spread")
 async def question_tarot_spread(request: Request_Question_Tarot_Spread):
     try:
-        return {'tarot_spread': 'Иди траву потрогуй да одувангчик подари, а не фигнёй занимайся'}
+        return {'tarot_spread': 'Иди траву потрогуй да одуванчик подари'}
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то наебнулос: {ex}")
+        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
 
 
@@ -103,7 +104,7 @@ async def competency_map(request: Request_Competency_Map):
     try:
         return {'map': 'что то в форме json'}
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то наебнулос: {ex}")
+        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
 
 
@@ -118,7 +119,7 @@ async def work_history_review(request: Request_Work_History):
     try:
         return {'work_review': 'Он был прекрасен как Иисус'}
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то наебнулос: {ex}")
+        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
 
 
@@ -133,7 +134,7 @@ async def recommendations(request: Request_Recommendations):
     try:
         return {'recommendations': ["Рекомендация 1: потрогай траву", "Рекомендация 2: попой песенки"]}
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то наебнулос: {ex}")
+        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
 
 
