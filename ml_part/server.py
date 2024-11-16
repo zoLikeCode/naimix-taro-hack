@@ -128,15 +128,25 @@ async def competency_map(request: Request_Competency_Map):
         raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
 
+#Заполнение данных профиля +
+class Request_Profile_Extract(BaseModel):
+    full_resume: str = "Текст полного резюме"
+
+
+@app.post("/profile_extract")
+async def competency_map(request: Request_Profile_Extract):
+    try:
+        rec = chat.profile_extract(request.full_resume)
+        return rec
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+    
+
+    
 
 
 
-
-
-
-
-
-#Характеристика с прошлых мест работы
+#Характеристика с прошлых мест работы +
 class Request_Work_History(BaseModel):
     full_resume: str = "Текст полного резюме"
 
@@ -144,7 +154,8 @@ class Request_Work_History(BaseModel):
 @app.post("/work_history_review")
 async def work_history_review(request: Request_Work_History):
     try:
-        return {'work_review': 'Он был прекрасен как Иисус'}
+        rec = chat.work_history_review(request.full_resume)
+        return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     

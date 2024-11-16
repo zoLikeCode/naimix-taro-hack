@@ -121,7 +121,7 @@ def draw_random_cards(tarot_list: list[str] = tarot_cards, N: int = 3) -> list[s
 
 def get_tarot(model, data, N):
     data = parse_txt_files('prompts/')
-    tarot = draw_random_cards(tarot_list = tarot_cards, N = N)
+    tarot = draw_random_cards(tarot_list = tarot_cards, N = 3)
 
 
     prompt = PromptTemplate(

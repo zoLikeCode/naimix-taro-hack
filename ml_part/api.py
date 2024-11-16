@@ -32,15 +32,21 @@ class Api:
 
     
     #Суммаризация резюме
-    def summ_rec(self, resume_text):
+    def summ_rec(self, full_resume: str) -> str:
+        """
+        Фнкция для суммаризации письма
+
+        full_resume - резюме кандидата
+        return -> суммаризированное резюме
+        """
         text_prompt = self.data['summ_rec']
 
         prompt = PromptTemplate(
             template = text_prompt,
             input_variables=["resume_text"]
-        ).format(resume_text=resume_text)
+        ).format(resume_text=full_resume)
 
-        rec = self.model.invoke(prompt)
+        rec = self.model.invoke(prompt).content
         return rec
     
     #Полный расклад Таро по персональной информации пользователя
@@ -145,7 +151,13 @@ class Api:
         return {"content": rec.content, "tarot": rec.tarot}
     
 
-    def competency_map(self, resume_summary):
+    def competency_map(self, resume_summary: str) -> dict:
+        """
+        Создание компетенционной карты
+
+        resume_summary -> суммаризированное резюме
+        return -> словарь с качествами участника
+        """
         text_prompt = self.data['competency_map']
         full_taro_spread = self.tarot_spread(resume_summary)
 
@@ -159,6 +171,53 @@ class Api:
         rec.tarot = full_taro_spread['tarot']
 
         return {"content": rec.content, "tarot": rec.tarot}
+    
+
+    def work_history_review(self, full_resume: str) -> dict:
+        """
+        Создание компетенционной карты
+
+        full_resume -> полное резюме
+        return -> словарь с историей работы
+        """
+
+        text_prompt = self.data['work_history_review']
+        cards = get_tarot(model = self.model, data = self.data, N = 3)
+
+        prompt = PromptTemplate(
+            template=text_prompt,
+            input_variables=["resume_text", "cards"]
+        ).format(resume_text=full_resume, cards=cards)
+
+        rec = self.model.invoke(prompt)
+        rec.tarot = cards
+
+        return {"content": rec.content, "tarot": rec.tarot}
+    
+
+    def profile_extract(self, full_resume: str) -> dict:
+        """
+        Используется для заполнения базы данных для нового кандидата
+
+        full_resume -> полное резюме
+        return -> словарь с всеми данными
+        """
+        text_prompt = self.data['profile_extract']
+        full_resume = full_resume
+        prompt = PromptTemplate (
+            template=text_prompt,
+            input_variables=["resume_text"]
+        ).format(resume_text = full_resume)
+
+        rec = self.model.invoke(prompt).content
+        rec = process_tarot_data(rec)
+
+        rec['summary_by_resume'] = self.summ_rec(full_resume)
+
+        return rec
+
+
+        
     
 
 
