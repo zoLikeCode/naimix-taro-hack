@@ -122,9 +122,9 @@ class Api:
         question: str - Вопрос пользователя
         return -> Ответ человеку на основе 3 карт
         """
+        print('работает question')
         text_prompt = self.data['question']
         cards = get_tarot(model = self.model, data = self.data, N = 3)
-
 
         prompt = PromptTemplate(
             template=text_prompt,
@@ -133,7 +133,6 @@ class Api:
 
         rec = self.model.invoke(prompt)
         rec.tarot = cards
-        print(rec)
 
         return {"content": rec.content, "tarot": rec.tarot}
     
@@ -222,6 +221,15 @@ class Api:
         rec['summary_by_resume'] = self.summ_rec(full_resume)
 
         return rec
+    
+
+    def feedback(self, candidate_name: str, feedback_type: str) -> dict:
+        return 'Выполняется feedback'
+        
+
+
+    def recommendations(self, resume_summary: str) -> dict:
+        return 'Выполняется recommendations'
 
 
         
