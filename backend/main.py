@@ -3,6 +3,7 @@ from datetime import datetime
 import uuid
 import shutil
 import models
+from PyPDF2 import PdfReader
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -61,5 +62,16 @@ async def post_resume(
     db.add(db_resume)
     db.commit()
     db.refresh(db_resume)
-    return db_resume
 
+    pdf_text = pdf_reader(file_location)
+    
+
+    return {'message': 'Сохранение резюме и создание профиля прошло успешно.'}
+
+def pdf_reader(path_to_pdf):
+    reader = PdfReader(path_to_pdf)
+    text = ""
+    for page in reader.pages:
+        text += page.extract_text()
+    return text
+    
