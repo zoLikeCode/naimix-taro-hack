@@ -36,7 +36,9 @@ class Question(BaseModel): #Запрос с использованием воп�
 class summarize_tarot_spread(BaseModel): # Запрос с использованием полного расклада таро
     taro_spred: str = "Полный расклад таро"
 
-
+class FeedBack(BaseModel):
+    candidate_name: str = "ФИО кандидата",
+    feedback_type: int =  0
 
 
 @app.get("/")
@@ -147,34 +149,26 @@ async def work_history_review(request: FullResume):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-#Рекомендательная система
-class Request_Recommendations(BaseModel):
-    context: str = "Что именно нужно рекомендовать",
-    data: str =  "Дополнительные данные, например, резюме или расклад"
-
-
-@app.post("/recommendations")
-async def recommendations(request: Request_Recommendations):
+#Запрос для генерации ответа пользователю
+@app.post("/feedback")
+async def feedback(request: FeedBack):
     try:
-        return {'recommendations': ["Рекомендация 1: потрогай траву", "Рекомендация 2: попой песенки"]}
+        rec = chat.feedback(request.candidate_name, request.feedback_type)
+        return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
 
 
+
+#Рекомендательная система
+@app.post("/recommendations")
+async def recommendations(request: SummResume):
+    try:
+        rec = chat.recommendations(request.resume_summary)
+        return rec
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
 
 
 
