@@ -8,7 +8,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1 
     env_file:
-      - .env
+      - ./ml_part/env
     deploy:
       resources:
         limits:
