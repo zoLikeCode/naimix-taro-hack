@@ -1,0 +1,12 @@
+services:
+  myapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      network: host
+    ports:
+      - "8001:8001"
+    environment:
+      - PYTHONUNBUFFERED=1 
+    env_file:
+      - .env 
