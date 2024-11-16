@@ -114,36 +114,39 @@ async def question_tarot_spread(request: Request_Question_Tarot_Spread):
     
 
 
-
-
-
-
-
-
-
-#Построение карты компетенций
+#Построение карты компетенций +
 class Request_Competency_Map(BaseModel):
-    full_resume: str = "Полное резюме"
+    resume_summary: str = "суммаризированное резюме"
 
 
 @app.post("/competency_map")
 async def competency_map(request: Request_Competency_Map):
     try:
-        rec = chat.competency_map(request.full_resume)
-        return {'map': 'что то в форме json'}
+        rec = chat.competency_map(request.resume_summary)
+        return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
 
+#Заполнение данных профиля +
+class Request_Profile_Extract(BaseModel):
+    full_resume: str = "Текст полного резюме"
+
+
+@app.post("/profile_extract")
+async def competency_map(request: Request_Profile_Extract):
+    try:
+        rec = chat.profile_extract(request.full_resume)
+        return rec
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+    
+
+    
 
 
 
-
-
-
-
-
-#Характеристика с прошлых мест работы
+#Характеристика с прошлых мест работы +
 class Request_Work_History(BaseModel):
     full_resume: str = "Текст полного резюме"
 
@@ -151,7 +154,8 @@ class Request_Work_History(BaseModel):
 @app.post("/work_history_review")
 async def work_history_review(request: Request_Work_History):
     try:
-        return {'work_review': 'Он был прекрасен как Иисус'}
+        rec = chat.work_history_review(request.full_resume)
+        return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
