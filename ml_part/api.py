@@ -17,7 +17,7 @@ import contextvars
 import json
 from pydantic import BaseModel, Field
 from langchain_core.output_parsers import JsonOutputParser
-from tarot import get_tarot, parse_txt_files
+from tarot import get_tarot, parse_txt_files, process_tarot_data
 
 
 
@@ -145,8 +145,21 @@ class Api:
         return {"content": rec.content, "tarot": rec.tarot}
     
 
-    def competency_map(self, full_resume):
-        pass
+    def competency_map(self, resume_summary):
+        text_prompt = self.data['competency_map']
+        full_taro_spread = self.tarot_spread(resume_summary)
+
+        prompt = PromptTemplate (
+            template=text_prompt,
+            input_variables=["full_taro_spread"],
+        ).format(full_taro_spread = full_taro_spread['content'])
+        
+        rec = self.model.invoke(prompt)
+        rec.content = process_tarot_data(rec.content)
+        rec.tarot = full_taro_spread['tarot']
+
+        return {"content": rec.content, "tarot": rec.tarot}
+    
 
 
 

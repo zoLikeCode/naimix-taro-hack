@@ -114,23 +114,16 @@ async def question_tarot_spread(request: Request_Question_Tarot_Spread):
     
 
 
-
-
-
-
-
-
-
-#Построение карты компетенций
+#Построение карты компетенций +
 class Request_Competency_Map(BaseModel):
-    full_resume: str = "Полное резюме"
+    resume_summary: str = "суммаризированное резюме"
 
 
 @app.post("/competency_map")
 async def competency_map(request: Request_Competency_Map):
     try:
-        rec = chat.competency_map(request.full_resume)
-        return {'map': 'что то в форме json'}
+        rec = chat.competency_map(request.resume_summary)
+        return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
