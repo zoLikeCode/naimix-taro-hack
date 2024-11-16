@@ -49,9 +49,11 @@ class Api:
         rec = self.model.invoke(prompt).content
         return rec
     
-    #Полный расклад Таро по персональной информации пользователя
-    def tarot_spread(self, resume_summary):
+    
+    def tarot_spread(self, resume_summary: str) -> dict:
         """"
+        Полный расклад Таро по персональной информации пользователя
+
         resume_summary: str - суммаризация резюме
         return -> расклад таро
         """
@@ -69,9 +71,12 @@ class Api:
 
         return {"content": rec.content, "tarot": rec.tarot}
     
-    #Суммаризация таро для 3 карт
-    def summ_tarot_full(self, resume_summary):
+
+
+    def summ_tarot_full(self, resume_summary: str) -> dict:
         """"
+        Суммаризация таро для 3 карт
+
         resume_summary: str - суммаризация резюме
         return -> суммаризированный расклад таро
         """
@@ -92,8 +97,10 @@ class Api:
         }
 
     
-    def tarot_one(self, resume_summary):
+    def tarot_one(self, resume_summary: str) -> dict:
         """"
+        Функция для ответа на вопрос с 1 картой
+
         resume_summary: str - суммаризация резюме
         return -> расклад на одной карте
         """
@@ -110,7 +117,7 @@ class Api:
         return {"content": rec.content, "tarot": rec.tarot}
     
 
-    def question(self, question):
+    def question(self, question: str) -> dict:
         """"
         question: str - Вопрос пользователя
         return -> Ответ человеку на основе 3 карт
@@ -126,15 +133,15 @@ class Api:
 
         rec = self.model.invoke(prompt)
         rec.tarot = cards
+        print(rec)
 
         return {"content": rec.content, "tarot": rec.tarot}
     
 
-    def forecast(self):
+    def forecast(self) -> dict:
         """
         Выдаёт хороший ли сегодня день для найма отрудников на основании 3 карт
         """
-        print('Работает forecast')
 
         text_prompt = self.data['forecast']
         cards = get_tarot(model = self.model, data = self.data, N = 3)

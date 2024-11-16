@@ -20,126 +20,114 @@ API = os.getenv("MODEL_API")
 app = FastAPI()
 chat = Api(API_KEY=API)
 
+
+class FullResume(BaseModel): #Запрос с использованием всего резюме
+    full_resume: str = "Текст полного резюме"
+
+
+class SummResume(BaseModel): #Запрос с использованием суммаризированного резюме
+    resume_summary: str = "Краткая инфа по резюме человека"
+
+
+class Question(BaseModel): #Запрос с использованием вопроса человека
+    user_question: str = "Любит - Не любит"
+
+
+class summarize_tarot_spread(BaseModel): # Запрос с использованием полного расклада таро
+    taro_spred: str = "Полный расклад таро"
+
+
+
+
 @app.get("/")
 async def root():
     return {"message": "This is Letters Service!"}
 
 
-
 #Прогноз по найму на день +
-@app.get("/day_forecast")
+@app.get("/day_forecast") 
 async def forecast():
     try:
         rec = chat.forecast()
         return rec
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
 
-
-
 #Суммаризация резюме +
-class Request_Summ_Reс(BaseModel):
-    full_resume: str = "Текст полного резюме"
-
-
 @app.post("/summarize_resume")
-async def summ_rec(request: Request_Summ_Reс):
+async def summ_rec(request: FullResume):
     try:
         summary = chat.summ_rec(request.full_resume)
         return summary
     
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
 
 
 # Суммаризированный расклад Таро по персональной информации пользователя +
-class summarize_tarot_spread(BaseModel):
-    summary: str = "Полный расклад таро"
-
-
 @app.post("/summarize_tarot_spread")
 async def summ_tarot(request: summarize_tarot_spread):
     try:
-        summary = chat.summ_tarot_full(request.summary)
+        summary = chat.summ_tarot_full(request.taro_spred)
         return summary
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
 
 
 #Расклад таро по 1 карте для кандидата +
-class Request_Tarot_One(BaseModel):
-    resume_summary: str = "Краткая инфа по резюме человека"
-
-
 @app.post("/tarot_one")
-async def one_tarot_spread(request: Request_Tarot_One):
+async def one_tarot_spread(request: SummResume):
     try:
         tarot_spread = chat.tarot_one(request.resume_summary)
         return tarot_spread
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
         
 
 
 #Полный расклад Таро по персональной информации пользователя +
-class Request_Tarot_Spread(BaseModel):
-    resume_summary: str = "Краткая инфа по резюме человека"
-
-
-@app.post("/tarot_spread")
-async def full_tarot_spread(request: Request_Tarot_Spread):
+@app.post("/tarot_spread") #Добавить удаление доп символов
+async def full_tarot_spread(request: SummResume):
     try:
         tarot_spread = chat.tarot_spread(request.resume_summary)
         return tarot_spread
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
 
 
 #Расклад по заданному вопросу +
-class Request_Question_Tarot_Spread(BaseModel):
-    user_question: str = "Любит - Не любит"
-
-
 @app.post("/question_tarot_spread")
-async def question_tarot_spread(request: Request_Question_Tarot_Spread):
+async def question_tarot_spread(request: Question):
     try:
         rec = chat.question(request.user_question)
         return rec
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
 
 
-#Построение карты компетенций +
-class Request_Competency_Map(BaseModel):
-    resume_summary: str = "суммаризированное резюме"
-
-
+#создание карты компетенции
 @app.post("/competency_map")
-async def competency_map(request: Request_Competency_Map):
+async def competency_map(request: SummResume):
     try:
         rec = chat.competency_map(request.resume_summary)
         return rec
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
 
 #Заполнение данных профиля +
-class Request_Profile_Extract(BaseModel):
-    full_resume: str = "Текст полного резюме"
-
-
 @app.post("/profile_extract")
-async def competency_map(request: Request_Profile_Extract):
+async def competency_map(request: FullResume):
     try:
         rec = chat.profile_extract(request.full_resume)
         return rec
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
 
     
@@ -147,18 +135,20 @@ async def competency_map(request: Request_Profile_Extract):
 
 
 #Характеристика с прошлых мест работы +
-class Request_Work_History(BaseModel):
-    full_resume: str = "Текст полного резюме"
-
-
 @app.post("/work_history_review")
-async def work_history_review(request: Request_Work_History):
+async def work_history_review(request: FullResume):
     try:
         rec = chat.work_history_review(request.full_resume)
         return rec
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
+
+
+
+
+
+
 
 
 
@@ -181,7 +171,7 @@ async def recommendations(request: Request_Recommendations):
     try:
         return {'recommendations': ["Рекомендация 1: потрогай траву", "Рекомендация 2: попой песенки"]}
     except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
 
 

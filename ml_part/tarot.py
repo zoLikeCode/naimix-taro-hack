@@ -37,6 +37,7 @@ tarot_cards = [
     "Королева Пентаклей", "Король Пентаклей"
 ]
 
+tarot_cards = [card.lower() for card in tarot_cards]
 
 
 def parse_txt_files(folder_path: str) -> dict:
@@ -79,19 +80,16 @@ def parse_txt_files(folder_path: str) -> dict:
 
 def process_tarot_data(raw_data: str) -> dict:
     """
-    Функция для обработки строки с картами Таро, удаления символов \n, замены скобок и преобразования в JSON.
+    Функция для обработки строки с картами Таро, удаления символов, замены скобок и преобразования в JSON.
 
-    :param raw_data: строка с данными карт Таро в формате с \n и квадратными скобками
+    :param raw_data: строка с данными карт Таро в формате с и квадратными скобками
     :return: возвращает обработанный JSON в виде словаря
     """
-    # Удаляем символы \n и заменяем квадратные скобки на фигурные
     processed_data = raw_data.replace("\n", "").replace("[", "{").replace("]", "}")
 
-    # Используем регулярное выражение для извлечения всего содержимого в фигурных скобках
     pattern = r"{(.*)}"
     matches = re.findall(pattern, processed_data)
 
-    # Преобразуем извлечённые данные в JSON
     if matches:
         json_data = "{" + matches[0] + "}"
         return json.loads(json_data)
@@ -108,8 +106,6 @@ def draw_random_cards(tarot_list: list[str] = tarot_cards, N: int = 3) -> list[s
     :param N: количество карт для выбора
     :return: список из N случайных карт
     """
-
-
     new_list = [random.choice(tarot_list) for _ in range(N)]
 
     result_list = [
@@ -119,7 +115,10 @@ def draw_random_cards(tarot_list: list[str] = tarot_cards, N: int = 3) -> list[s
     return result_list
 
 
-def get_tarot(model, data, N):
+def get_tarot(model, data: dict, N: int = 3):
+    """
+    Функция для выдачи словаря с N картами и их описание
+    """
     data = parse_txt_files('prompts/')
     tarot = draw_random_cards(tarot_list = tarot_cards, N = 3)
 
