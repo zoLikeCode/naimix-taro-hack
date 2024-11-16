@@ -10,13 +10,15 @@ from fastapi import FastAPI, HTTPException
 from logging.handlers import RotatingFileHandler
 from pydantic import BaseModel
 import uvicorn
-from api import *
+from api import Api
 #from mistral_api import MistralChat, setup_logger
 
+load_dotenv()
+API = os.getenv("MODEL_API")
 
 
 app = FastAPI()
-
+chat = Api(API_KEY=API)
 
 @app.get("/")
 async def root():
@@ -24,18 +26,19 @@ async def root():
 
 
 
-#Прогноз по найму на день
+#Прогноз по найму на день +
 @app.get("/day_forecast")
 async def forecast():
     try:
-        return {'forecast': "Its raining men, aliluya"}
+        rec = chat.forecast()
+        return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
 
 
 
-#Суммаризация резюме
+#Суммаризация резюме +
 class Request_Summ_Reс(BaseModel):
     full_resume: str = "Текст полного резюме"
 
@@ -43,27 +46,45 @@ class Request_Summ_Reс(BaseModel):
 @app.post("/summarize_resume")
 async def summ_rec(request: Request_Summ_Reс):
     try:
-        return {'summary': 'Что то будет написано по резюме'}
+        summary = chat.summ_rec(request.full_resume)
+        return summary
+    
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
 
 
-# Суммаризированный расклад Таро по персональной информации пользователя
+# Суммаризированный расклад Таро по персональной информации пользователя +
 class summarize_tarot_spread(BaseModel):
-    full_tarot: str = "Полный расклад таро"
+    summary: str = "Полный расклад таро"
 
 
 @app.post("/summarize_tarot_spread")
 async def summ_tarot(request: summarize_tarot_spread):
     try:
-        return {'summary': 'У отвалится'}
+        summary = chat.summ_tarot_full(request.summary)
+        return summary
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Что то: {ex}")
+    
+
+
+#Расклад таро по 1 карте для кандидата +
+class Request_Tarot_One(BaseModel):
+    resume_summary: str = "Краткая инфа по резюме человека"
+
+
+@app.post("/tarot_one")
+async def one_tarot_spread(request: Request_Tarot_One):
+    try:
+        tarot_spread = chat.tarot_one(request.resume_summary)
+        return tarot_spread
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Что то: {ex}")
         
 
 
-#Полный расклад Таро по персональной информации пользователя
+#Полный расклад Таро по персональной информации пользователя +
 class Request_Tarot_Spread(BaseModel):
     resume_summary: str = "Краткая инфа по резюме человека"
 
@@ -71,13 +92,14 @@ class Request_Tarot_Spread(BaseModel):
 @app.post("/tarot_spread")
 async def full_tarot_spread(request: Request_Tarot_Spread):
     try:
-        return {'tarot_spread': 'ДА ПРИБУДЕТ С ТОБОЙ СИЛА И СОЛНЦЕ НАД ТОБОЙ'}
+        tarot_spread = chat.tarot_spread(request.resume_summary)
+        return tarot_spread
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
 
 
-#Расклад по заданному вопросу
+#Расклад по заданному вопросу +
 class Request_Question_Tarot_Spread(BaseModel):
     user_question: str = "Любит - Не любит"
 
@@ -85,27 +107,39 @@ class Request_Question_Tarot_Spread(BaseModel):
 @app.post("/question_tarot_spread")
 async def question_tarot_spread(request: Request_Question_Tarot_Spread):
     try:
-        return {'tarot_spread': 'Иди траву потрогуй да одуванчик подари'}
+        rec = chat.question(request.user_question)
+        return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
+
+
+
+
+
 
 
 
 
 #Построение карты компетенций
 class Request_Competency_Map(BaseModel):
-    source: str = '"summarized_tarot" или "resume"',
-    data: str = "Суммаризированный расклад или текст резюме"
+    full_resume: str = "Полное резюме"
 
 
 @app.post("/competency_map")
 async def competency_map(request: Request_Competency_Map):
     try:
+        rec = chat.competency_map(request.full_resume)
         return {'map': 'что то в форме json'}
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
+
+
+
+
+
+
 
 
 
@@ -121,6 +155,15 @@ async def work_history_review(request: Request_Work_History):
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Что то: {ex}")
     
+
+
+
+
+
+
+
+
+
 
 
 #Рекомендательная система
@@ -143,4 +186,4 @@ async def recommendations(request: Request_Recommendations):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run(app, host="0.0.0.0", port=8002)
