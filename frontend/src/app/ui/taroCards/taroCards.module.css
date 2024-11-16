@@ -1,0 +1,17 @@
+.main__container {
+  width: 136.5px;
+  height: 223.6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10.4px;
+  background-color: rgb(255, 255, 255);
+  content: var(--image-url);
+}
+
+.main__content {
+  color: VAR(--light-cyan-color);
+  font-size: 150px;
+  font-weight: 700;
+  line-height: 150px;
+}

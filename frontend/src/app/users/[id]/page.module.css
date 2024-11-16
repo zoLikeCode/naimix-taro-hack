@@ -1,0 +1,402 @@
+.main__container {
+  width: 1140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.info__container {
+  margin-top: 25px;
+  margin-bottom: 35px;
+  padding: 50px 40px 50px 60px;
+  width: 1140px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  border-radius: 8px;
+  background-color: VAR(--light-cyan-color);
+}
+
+.info__meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.info__avatar {
+  margin-bottom: 46px;
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  background: rgb(217, 217, 217);
+}
+
+.info__button__list {
+  cursor: pointer;
+  margin-bottom: 16px;
+  width: 141px;
+  padding: 5px 10px;
+  color: rgb(255, 255, 255);
+  font-family: Graphik LCG;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  text-align: center;
+  border-radius: 4px;
+  background: VAR(--light-orange-color);
+  border: none;
+}
+
+.info__button__list__noactive {
+  cursor: not-allowed;
+  margin-bottom: 16px;
+  width: 141px;
+  padding: 5px 10px;
+  color: rgb(255, 255, 255);
+  font-family: Graphik LCG;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  text-align: center;
+  border-radius: 4px;
+  background: rgb(89, 89, 89);
+  border: none;
+}
+
+.info__buttons__list__container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 29px;
+}
+
+.info__contacts {
+  margin-left: 40px;
+  margin-top: 19px;
+}
+
+.info__contacts h3 {
+  color: rgb(0, 0, 0);
+  font-family: Graphik LCG;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+  margin-bottom: 12px;
+}
+
+.info__contacts h4 {
+  color: rgb(89, 89, 89);
+  font-family: Graphik LCG;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  margin-bottom: 26px;
+}
+
+.info__contacts__meta__block {
+  width: 492px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-bottom: 19px;
+}
+
+.info__contacts__meta__phone {
+  margin-right: 17px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  width: 158px;
+  height: 70px;
+  border-radius: 16px;
+  background: rgb(255, 255, 255);
+}
+
+.info__contacts__meta__phone p {
+  margin-top: 12px;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.info__contacts__meta__email {
+  margin-right: 17px;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  width: 156px;
+  height: 70px;
+  border-radius: 16px;
+  background: rgb(255, 255, 255);
+}
+
+.info__contacts__meta__email p {
+  width: 130px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-top: 12px;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.info__contacts__meta__birthday {
+  margin-bottom: 10px;
+  padding: 10px 0px 10px 15px;
+  width: 144px;
+  height: 70px;
+  border-radius: 16px;
+  background: rgb(255, 255, 255);
+}
+
+.info__contacts__meta__birthday p {
+  margin-top: 12px;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.info__contacts__meta__city {
+  margin-right: 17px;
+  padding: 10px 20px;
+  width: 156px;
+  height: 70px;
+  border-radius: 16px;
+  background: rgb(255, 255, 255);
+}
+
+.info__contacts__meta__city p {
+  width: 130px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-top: 12px;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.info__contacts__meta__levels {
+  margin-right: 17px;
+  padding: 10px 20px;
+  width: 260px;
+  height: 70px;
+  border-radius: 16px;
+  background: rgb(255, 255, 255);
+}
+
+.info__contacts__meta__levels p {
+  width: 230px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-top: 12px;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.info__contacts__sammary {
+  width: 463px;
+  padding: 10px 20px;
+  border-radius: 16px;
+  background: rgb(255, 255, 255);
+}
+
+.info__contacts__sammary p {
+  margin: 19px 0px;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.info__contacts span {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.info__works {
+  margin-left: 30px;
+  padding: 20px;
+  width: 294px;
+  border-radius: 16px;
+  background: rgb(255, 255, 255);
+}
+
+.info__works span {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.more__info {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  color: rgb(89, 89, 89);
+  font-family: Graphik LCG;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+}
+
+.taro__container {
+  display: flex;
+  flex-direction: row;
+  width: 1140px;
+  height: 569px;
+  background-color: VAR(--light-cyan-color);
+  border-radius: 8px;
+}
+
+.taro__lists {
+  margin: 136px 89px 44px 81px;
+  width: 516px;
+  height: 471px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.taro__chooses {
+  margin: 24px 0px;
+  width: 297.8px;
+  height: 520.22px;
+  position: relative;
+}
+
+.taro__buttons__container {
+  width: 343px;
+  position: absolute;
+  margin-top: 455px;
+  margin-left: 182px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.taro__button {
+  cursor: pointer;
+  width: 141px;
+  height: 28px;
+  text-align: center;
+  border-radius: 4px;
+  background: VAR(--light-orange-color);
+  border: none;
+  color: rgb(255, 255, 255);
+  font-family: Graphik LCG;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.taro__button__active {
+  cursor: pointer;
+  width: 141px;
+  height: 28px;
+  text-align: center;
+  border-radius: 4px;
+  background: rgb(14, 102, 102);
+  border: none;
+  color: rgb(255, 255, 255);
+  font-family: Graphik LCG;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.taro__choosesCards {
+  cursor: pointer;
+  position: absolute;
+  width: 85.93px;
+  height: 130.92px;
+  background-image: url('../../../../public/backTaroCards.png');
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.2s ease;
+}
+
+.taro__choosesCards:hover {
+  transform: translateY(-10px);
+}
+
+.parcel__container {
+  margin-top: 35px;
+  padding: 40px;
+  width: 1140px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  background-color: VAR(--light-cyan-color);
+}
+
+.h5__text {
+  color: rgb(89, 89, 89);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.parcel__buttons__block {
+  width: 500px;
+  margin-top: 16px;
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.parcel__button {
+  width: 117px;
+  height: 28px;
+  font-family: Graphik LCG;
+  border-radius: 4px;
+  background: VAR(--light-orange-color);
+  border: none;
+  outline: none;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.recommendations__container {
+  margin-top: 35px;
+  margin-bottom: 35px;
+  padding: 40px;
+  width: 1140px;
+  background-color: VAR(--light-cyan-color);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.recommendations__description {
+  margin-top: 28px;
+  width: 848px;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+}
+
+.best__match__container {
+  margin-bottom: 100px;
+  padding: 40px 20px;
+  width: 1140px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  background-color: VAR(--light-cyan-color);
+}
+
+.best__match__container h5 {
+  margin-left: 20px;
+  margin-bottom: 33px;
+}

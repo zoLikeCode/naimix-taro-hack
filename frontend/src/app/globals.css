@@ -1,4 +1,8 @@
 :root {
+  font-family: Graphik LCG;
+
+  --light-cyan-color: rgb(240, 246, 250);
+  --light-orange-color: rgb(242, 84, 48);
 }
 
 html,
@@ -11,4 +15,24 @@ body {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+.main__layout {
+  display: flex;
+  justify-content: center;
+}
+
+.main__header {
+  width: 100vw;
+  height: 60px;
+  background-color: azure;
+}
+
+.main__notfound {
+  margin-top: 300px;
+  text-align: center;
+}
+
+.main__notfound p {
+  margin-bottom: 10px;
 }

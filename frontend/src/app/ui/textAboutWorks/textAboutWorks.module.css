@@ -1,0 +1,28 @@
+.main__container {
+  margin-top: 34px;
+  display: flex;
+  flex-direction: column;
+}
+
+.years__works {
+  margin-bottom: 6px;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+}
+
+.name__company {
+  margin-bottom: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+}
+
+.desc__works {
+  margin-left: 10px;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+}
