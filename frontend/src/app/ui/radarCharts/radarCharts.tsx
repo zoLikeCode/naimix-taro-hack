@@ -10,7 +10,6 @@ import {
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
 
-// Регистрация компонентов
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
 const RadarCharts = ({ points }: { points: number[] }) => {
@@ -31,15 +30,13 @@ const RadarCharts = ({ points }: { points: number[] }) => {
     ],
     datasets: [
       {
-        data: [3, 1, 2, 6, 9, 3.4, 9, 5.4, 7, 8, 5.3, 1.1], // Значения по каждой характеристике
-        backgroundColor: 'rgba(242, 84, 48, 0.2)', // Заливка
-        borderColor: 'rgba(242, 84, 48, 1)', // Цвет границы
-        borderWidth: 1, // Толщина границы
+        data: [3, 1, 2, 6, 9, 3.4, 9, 5.4, 7, 8, 5.3, 1.1],
+        backgroundColor: 'rgba(242, 84, 48, 0.2)',
+        borderColor: 'rgba(242, 84, 48, 1)',
+        borderWidth: 1,
       },
     ],
   };
-
-  // Опции диаграммы
   const options = {
     responsive: true,
     plugins: {
@@ -47,20 +44,19 @@ const RadarCharts = ({ points }: { points: number[] }) => {
         display: false,
       },
       tooltip: {
-        enabled: true, // Всплывающие подсказки
+        enabled: true,
       },
     },
     scales: {
       r: {
-        beginAtZero: true, // Начало шкалы с нуля
-        suggestedMax: 10, // Максимальное значение шкалы
+        beginAtZero: true,
+        suggestedMax: 10,
         ticks: {
-          stepSize: 1, // Шаг между значениями
+          stepSize: 1,
         },
       },
     },
   };
-
   return (
     <div style={{ width: '500px', height: '500px', margin: '0 auto' }}>
       <Radar data={data} options={options} />
