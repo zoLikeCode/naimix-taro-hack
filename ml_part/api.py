@@ -223,8 +223,26 @@ class Api:
         return rec
     
 
-    def feedback(self, candidate_name: str, feedback_type: str) -> dict:
-        return 'Выполняется feedback'
+    def feedback(self, candidate_name: str, feedback_type: int) -> str: 
+        """
+        Функция генерирует фидбек для кандидата, учитывая положительный или
+        отрицаьельный результат найма
+
+        candidate_name = ФИО кандидата
+        feedback_type = 1/0, в зависимости от готовности взять на работа
+
+        return -> готовый филбек
+        """
+        text_prompt = self.data['feedback']
+
+        prompt = PromptTemplate(
+            template=text_prompt,
+            input_variables=["candidate_name", "feedback_type"]
+        ).format(candidate_name=candidate_name,
+                feedback_type=feedback_type)
+
+        rec = self.model.invoke(prompt).content
+        return rec
         
 
 

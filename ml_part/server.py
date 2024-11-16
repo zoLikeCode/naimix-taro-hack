@@ -149,7 +149,7 @@ async def work_history_review(request: FullResume):
 
 
 
-#Запрос для генерации ответа пользователю
+#Запрос для генерации ответа пользователю +
 @app.post("/feedback")
 async def feedback(request: FeedBack):
     try:
