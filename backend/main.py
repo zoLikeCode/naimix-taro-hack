@@ -64,6 +64,7 @@ async def post_resume(
     db.refresh(db_resume)
 
     pdf_text = pdf_reader(file_location)
+    pdf_photo_by_resume = ''
     
 
     return {'message': 'Сохранение резюме и создание профиля прошло успешно.'}

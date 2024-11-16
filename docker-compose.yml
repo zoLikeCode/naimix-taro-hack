@@ -1,4 +1,20 @@
 services:
+  ml_part:
+    build: ./ml_part
+    volumes: 
+      - ./ml_part:/app
+    ports:
+      - "8002:8002"
+    environment:
+      - PYTHONUNBUFFERED=1 
+    env_file:
+      - .env
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 4096M
+    restart: always
   postgres:
     image: postgres:14
     environment:
