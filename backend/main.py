@@ -205,9 +205,13 @@ async def post_taro_spread(
     return db_taro
 
 
-@app.get('//')
-async def get():
-    pass
+@app.get('/get_competency/')
+async def get(
+    id: int,
+    db: Session = Depends(get_db)
+):
+    info = db.query(models.Metrics).filter(models.Metrics.taro_id == id).first()
+    return info
 
 
 @app.post('/post_competency_map/')
