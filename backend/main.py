@@ -164,12 +164,11 @@ async def post_taro_spread(
     db: Session = Depends(get_db)
 ):
     user_profile = db.query(models.UserProfile).filter(models.UserProfile.user_profile_id == id).first()
-
     payload = {
         'full_resume': user_profile.summary_by_resume
     }
     if taro_status == 'compatibility':
-        response = requests.post(f'{API_TARO}/compatibility', json=payload)
+        response = requests.get(f'{API_TARO}/compatibility')
     else:
         response = requests.post(f'{API_TARO}/tarot_spread', json=payload)
     data = response.json()
