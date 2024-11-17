@@ -21,29 +21,30 @@ from tarot import get_tarot, parse_txt_files, date_parsing, cleaner
 
 
 
-# def handle_exceptions(func):
-#     """
-#     Декоратор для обработки всех ошибок в _chain_*
-#     """
-#     @wraps(func)
-#     def wrapper(*args, **kwargs):
-#         print(1.1)
-#         repetition  = kwargs.get('repetition', 0) 
-#         print(1.2)
-#         try:
-#             print(1.3)
-#             return func(*args, **kwargs)
+def handle_exceptions(func):
+    """
+    Декоратор для обработки всех ошибок в _chain_*
+    """
+    print(111)
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(1.1)
+        repetition  = kwargs.get('repetition', 0) 
+        print(1.2)
+        try:
+            print(1.3)
+            return func(*args, **kwargs)
             
-#         except Exception as ex:
+        except Exception as ex:
             
-#             if repetition  < 5:  
-#                 wait_time = 1 + repetition  / 10
-#                 time.sleep(wait_time) 
-#                 repetition += 1
-#                 kwargs['repetition'] = repetition
-#                 return wrapper(*args, **kwargs)
-#             else:
-#                 return ex
+            if repetition  < 5:  
+                wait_time = 1 + repetition  / 10
+                time.sleep(wait_time) 
+                repetition += 1
+                kwargs['repetition'] = repetition
+                return wrapper(*args, **kwargs)
+            else:
+                return ex
                 
 
 
@@ -163,7 +164,7 @@ class Api:
         return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    @handle_exceptions
+    #@handle_exceptions
     def forecast(self, repetition: int = 0) -> dict:
         """
         Выдаёт хороший ли сегодня день для найма отрудников на основании 3 карт
