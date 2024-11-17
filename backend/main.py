@@ -157,7 +157,7 @@ async def post_resume(
 
     return {'message': 'Сохранение резюме и создание профиля прошло успешно.'}
 
-@app.post("/post_taro_spread/{taro_status}/{id}")
+@app.post("/post_taro_spread/")
 async def post_taro_spread(
     taro_status: str,
     id: int,
