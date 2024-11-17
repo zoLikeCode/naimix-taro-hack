@@ -19,6 +19,9 @@ class UserProfile(Base):
    birthday = Column(String)
    prof = Column(String)
    phone_number = Column(String)
+   experience = Column(String)
+   summary_by_taro = Column(TEXT)
+   recomendation = Column(TEXT)
    salary = Column(String)
    email = Column(String)
    city = Column(String)
@@ -39,6 +42,7 @@ class UserTaro(Base):
    user_profile_id = deferred(Column(Integer, ForeignKey(UserProfile.user_profile_id)))
    taro_info = Column(TEXT)
    cards = Column(String)
+   status = Column(String)
 
    user_profile = relationship('UserProfile', foreign_keys='UserTaro.user_profile_id')
 

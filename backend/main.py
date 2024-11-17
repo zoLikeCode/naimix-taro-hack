@@ -109,6 +109,12 @@ async def post_resume(
     response = requests.post(f'{API_TARO}/profile_extract', json=payload)
     data = response.json()
 
+    payload_rec = {
+        'resume_summary': data['summary_by_resume']
+    }
+    recommendation = requests.post(f'{API_TARO}/recommendations', json=payload_rec)
+    rec = recommendation.json()
+
     db_profile = models.UserProfile(
         full_name = data['name'],
         phone_number = data['phone_number'],
@@ -119,6 +125,8 @@ async def post_resume(
         city = data['city'],
         education = data['education'],
         faculty = data['faculty'],
+        experience = data['experience'],
+        recomendation = rec['recomendation'],
         summary_by_resume = data['summary_by_resume'],
         job_experience = data['job_experience'],
         about = data['about'],
@@ -131,8 +139,9 @@ async def post_resume(
 
     return {'message': 'Сохранение резюме и создание профиля прошло успешно.'}
 
-@app.post("/post_taro_spread/{id}")
+@app.post("/post_taro_spread/{taro_status}/{id}")
 async def post_taro_spread(
+    taro_status: str,
     id: int,
     db: Session = Depends(get_db)
 ):
@@ -141,13 +150,17 @@ async def post_taro_spread(
     payload = {
         'full_resume': user_profile.summary_by_resume
     }
-    response = requests.post(f'{API_TARO}/tarot_spread', json=payload)
+    if taro_status == 'compatibility':
+        response = requests.post(f'{API_TARO}/compatibility', json=payload)
+    else:
+        response = requests.post(f'{API_TARO}/tarot_spread', json=payload)
     data = response.json()
 
     db_taro = models.UserTaro(
         user_profile_id = user_profile.user_profile_id,
         taro_info = data['content'],
-        cards = ','.join(list(data['tarot'].keys()))
+        cards = ','.join(list(data['tarot'].keys())),
+        status = taro_status
     )
     db.add(db_taro)
     db.commit()
