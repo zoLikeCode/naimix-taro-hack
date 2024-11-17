@@ -106,6 +106,7 @@ async def full_tarot_spread(request: SummResume):
 @app.post("/question_tarot_spread")
 async def question_tarot_spread(request: Question):
     try:
+        print(request.user_question)
         rec = chat.question(request.user_question)
         return rec
     except Exception as ex:
