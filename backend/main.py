@@ -56,9 +56,13 @@ async def get_photo(name):
 
 
 @app.get('/get_profiles/')
-async def get_profiles(db: Session = Depends(get_db)):
-    result = db.query(models.UserProfile).all()
-    return result
+async def get_profiles(offset: int, limit: int, db: Session = Depends(get_db)):
+    result = db.query(models.UserProfile).offset(offset).limit(limit).all()
+    return {
+        'offset' : offset,
+        'limit' : limit,
+        'result': result
+    }
 
 @app.get('/get_profile/{id}')
 async def get_profile(id:int, db: Session = Depends(get_db)):
