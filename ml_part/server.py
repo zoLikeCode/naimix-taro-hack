@@ -33,9 +33,12 @@ class Question(BaseModel): #Запрос с использованием воп�
     user_question: str = "Любит - Не любит"
 
 
-class summarize_tarot_spread(BaseModel): # Запрос с использованием полного расклада таро
+class TarotSpread(BaseModel): # Запрос с использованием полного расклада таро
     taro_spred: str = "Полный расклад таро"
 
+class FeedBack(BaseModel):
+    candidate_name: str = "ФИО кандидата",
+    feedback_type: int =  0
 
 
 
@@ -54,6 +57,16 @@ async def forecast():
         raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
 
+
+#Сработаются ли 2 работника
+@app.get("/compatibility")
+async def compatibility():
+    try:
+        rec = chat.compatibility()
+        return rec
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
+
 #Суммаризация резюме +
 @app.post("/summarize_resume")
 async def summ_rec(request: FullResume):
@@ -68,7 +81,7 @@ async def summ_rec(request: FullResume):
 
 # Суммаризированный расклад Таро по персональной информации пользователя +
 @app.post("/summarize_tarot_spread")
-async def summ_tarot(request: summarize_tarot_spread):
+async def summ_tarot(request: TarotSpread):
     try:
         summary = chat.summ_tarot_full(request.taro_spred)
         return summary
@@ -103,6 +116,7 @@ async def full_tarot_spread(request: SummResume):
 @app.post("/question_tarot_spread")
 async def question_tarot_spread(request: Question):
     try:
+        print(request.user_question)
         rec = chat.question(request.user_question)
         return rec
     except Exception as ex:
@@ -112,9 +126,9 @@ async def question_tarot_spread(request: Question):
 
 #создание карты компетенции
 @app.post("/competency_map")
-async def competency_map(request: SummResume):
+async def competency_map(request: TarotSpread):
     try:
-        rec = chat.competency_map(request.resume_summary)
+        rec = chat.competency_map(request.taro_spred)
         return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
@@ -124,7 +138,8 @@ async def competency_map(request: SummResume):
 @app.post("/profile_extract")
 async def competency_map(request: FullResume):
     try:
-        rec = chat.profile_extract(request.full_resume)
+        print(1)
+        rec = chat.profile_extract(full_resume = request.full_resume)
         return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
@@ -147,32 +162,28 @@ async def work_history_review(request: FullResume):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-#Рекомендательная система
-class Request_Recommendations(BaseModel):
-    context: str = "Что именно нужно рекомендовать",
-    data: str =  "Дополнительные данные, например, резюме или расклад"
-
-
-@app.post("/recommendations")
-async def recommendations(request: Request_Recommendations):
+#Запрос для генерации ответа пользователю +
+@app.post("/feedback")
+async def feedback(request: FeedBack):
     try:
-        return {'recommendations': ["Рекомендация 1: потрогай траву", "Рекомендация 2: попой песенки"]}
+        rec = chat.feedback(request.candidate_name, request.feedback_type)
+        return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
+
+
+
+#Рекомендательная система +
+@app.post("/recommendations")
+async def recommendations(request: SummResume):
+    try:
+        rec = chat.recommendations(request.resume_summary)
+        return rec
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
+
+
 
 
 

@@ -1,4 +1,16 @@
 services:
+  backend:
+    build: ./backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - '8000:8000'
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 4096M
+    restart: always
   ml_part:
     build: ./ml_part
     volumes: 
