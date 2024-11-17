@@ -297,7 +297,7 @@ class Api:
         rec = self.model.invoke(prompt)
         rec.tarot = taro_spread['tarot']
         
-        return {"content": cleaner(rec.content), "tarot": rec.tarot}
+        return {"content": rec.content, "tarot": rec.tarot}
     
     @handle_exceptions
     def compatibility(self, repetition: int = 0) -> dict:
