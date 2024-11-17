@@ -18,6 +18,7 @@ import json
 from pydantic import BaseModel, Field
 from langchain_core.output_parsers import JsonOutputParser
 from tarot import get_tarot, parse_txt_files, date_parsing, cleaner
+#from langchain_community.chat_models import GigaChat
 
 
 
@@ -51,6 +52,9 @@ class Api:
     def __init__(self, API_KEY):
         self.data = parse_txt_files('prompts/')
         self.model = ChatMistralAI(api_key = API_KEY, model_name = 'ministral-8b-latest')
+        #self.model = GigaChat(credentials=API_KEY, verify_ssl_certs=False)
+        a = self.model.invoke('Как у тебя дела?')
+        print(a)
 
     
     #Суммаризация резюме
@@ -237,21 +241,15 @@ class Api:
         full_resume -> полное резюме
         return -> словарь с всеми данными
         """
-        print(2)
         text_prompt = self.data['profile_extract']
         full_resume = full_resume
-        print(3)
         prompt = PromptTemplate (
             template=text_prompt,
             input_variables=["resume_text"]
         ).format(resume_text = full_resume)
-        print(4)
         rec = self.model.invoke(prompt).content
-        print(5)
         rec = date_parsing(rec)
-        print(6)
         rec['summary_by_resume'] = self.summ_rec(full_resume)
-        print(7)
         return rec
     
 
@@ -304,8 +302,23 @@ class Api:
         return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
     @handle_exceptions
-    def compatibility(self):
-        pass
+    def compatibility(self, repetition: int = 0) -> dict:
+        """
+        Функция для предсказания смогут ли сработаться 2 человека 
+
+        return -> Сможет или нет, и почему
+        """
+        text_prompt = self.data['compatibility']
+        cards = get_tarot(model = self.model, data = self.data, N = 3)
+
+        prompt = PromptTemplate(
+            template=text_prompt,
+            input_variables=["cards"]
+        ).format(cards=cards)
+
+        rec = self.model.invoke(prompt)
+
+        return {"content": cleaner(rec.content), "tarot": cards}
 
 
         

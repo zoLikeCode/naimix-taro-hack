@@ -57,6 +57,16 @@ async def forecast():
         raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
     
 
+
+#Сработаются ли 2 работника
+@app.get("/compatibility")
+async def compatibility():
+    try:
+        rec = chat.compatibility()
+        return rec
+    except Exception as ex:
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
+
 #Суммаризация резюме +
 @app.post("/summarize_resume")
 async def summ_rec(request: FullResume):
