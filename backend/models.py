@@ -16,6 +16,8 @@ class UserProfile(Base):
 
    user_profile_id = Column(Integer, primary_key=True)
    full_name = Column(String)
+   birthday = Column(String)
+   prof = Column(String)
    phone_number = Column(String)
    salary = Column(String)
    email = Column(String)
