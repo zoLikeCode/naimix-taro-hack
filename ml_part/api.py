@@ -305,7 +305,7 @@ class Api:
     
     @handle_exceptions
     def compatibility(self):
-    
+        pass
 
 
         
