@@ -17,11 +17,29 @@ import contextvars
 import json
 from pydantic import BaseModel, Field
 from langchain_core.output_parsers import JsonOutputParser
-from tarot import get_tarot, parse_txt_files, process_tarot_data
+from tarot import get_tarot, parse_txt_files, date_parsing, cleaner
 
 
 
-
+def handle_exceptions(func):
+    """
+    Декоратор для обработки всех ошибок в _chain_*
+    """
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        repetition  = kwargs.get('repetition', 0) 
+        try:
+            return func(*args, **kwargs)
+        except Exception as ex:
+            if repetition  < 5:  
+                wait_time = 1 + repetition  / 10
+                time.sleep(wait_time) 
+                repetition += 1
+                kwargs['repetition'] = repetition
+                return wrapper(*args, **kwargs)
+            else:
+                return ex
+                
 
 
 
@@ -32,9 +50,10 @@ class Api:
 
     
     #Суммаризация резюме
-    def summ_rec(self, full_resume: str) -> str:
+    @handle_exceptions
+    def summ_rec(self, full_resume: str, repetition: int = 0) -> str:
         """
-        Фнкция для суммаризации письма
+        Функция для суммаризации письма
 
         full_resume - резюме кандидата
         return -> суммаризированное резюме
@@ -47,10 +66,10 @@ class Api:
         ).format(resume_text=full_resume)
 
         rec = self.model.invoke(prompt).content
-        return rec
+        return cleaner(rec)
     
-    
-    def tarot_spread(self, resume_summary: str) -> dict:
+    @handle_exceptions
+    def tarot_spread(self, resume_summary: str, repetition: int = 0) -> dict:
         """"
         Полный расклад Таро по персональной информации пользователя
 
@@ -69,11 +88,11 @@ class Api:
         rec = self.model.invoke(prompt)
         rec.tarot = cards
 
-        return {"content": rec.content, "tarot": rec.tarot}
+        return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-
-    def summ_tarot_full(self, resume_summary: str) -> dict:
+    @handle_exceptions
+    def summ_tarot_full(self, resume_summary: str, repetition: int = 0) -> dict:
         """"
         Суммаризация таро для 3 карт
 
@@ -92,12 +111,13 @@ class Api:
 
 
         return{
-            "content": rec.content,
+            "content": cleaner(rec.content),
             "tarot": full_taro_spread['tarot']
         }
 
     
-    def tarot_one(self, resume_summary: str) -> dict:
+    @handle_exceptions
+    def tarot_one(self, resume_summary: str, repetition: int = 0) -> dict:
         """"
         Функция для ответа на вопрос с 1 картой
 
@@ -114,10 +134,11 @@ class Api:
         rec = self.model.invoke(prompt)
         rec.tarot = cards
 
-        return {"content": rec.content, "tarot": rec.tarot}
+        return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    def question(self, question: str) -> dict:
+    @handle_exceptions
+    def question(self, question: str, repetition: int = 0) -> dict:
         """"
         question: str - Вопрос пользователя
         return -> Ответ человеку на основе 3 карт
@@ -134,10 +155,11 @@ class Api:
         rec = self.model.invoke(prompt)
         rec.tarot = cards
 
-        return {"content": rec.content, "tarot": rec.tarot}
+        return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    def forecast(self) -> dict:
+    @handle_exceptions
+    def forecast(self, repetition: int = 0) -> dict:
         """
         Выдаёт хороший ли сегодня день для найма отрудников на основании 3 карт
         """
@@ -154,32 +176,34 @@ class Api:
         rec = self.model.invoke(prompt)
         rec.tarot = cards
 
-        return {"content": rec.content, "tarot": rec.tarot}
+        return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    def competency_map(self, resume_summary: str) -> dict:
+    @handle_exceptions
+    def competency_map(self, taro_spred: str, repetition: int = 0) -> dict:
         """
         Создание компетенционной карты
 
         resume_summary -> суммаризированное резюме
         return -> словарь с качествами участника
         """
+        print(2)
         text_prompt = self.data['competency_map']
-        full_taro_spread = self.tarot_spread(resume_summary)
 
         prompt = PromptTemplate (
             template=text_prompt,
             input_variables=["full_taro_spread"],
-        ).format(full_taro_spread = full_taro_spread['content'])
-        
-        rec = self.model.invoke(prompt)
-        rec.content = process_tarot_data(rec.content)
-        rec.tarot = full_taro_spread['tarot']
+        ).format(full_taro_spread = taro_spred)
 
-        return {"content": rec.content, "tarot": rec.tarot}
+        rec = self.model.invoke(prompt)
+        rec.content = date_parsing(rec.content)
+        
+
+        return {"content": rec.content}
     
 
-    def work_history_review(self, full_resume: str) -> dict:
+    @handle_exceptions
+    def work_history_review(self, full_resume: str, repetition: int = 0) -> dict:
         """
         Создание компетенционной карты
 
@@ -198,10 +222,11 @@ class Api:
         rec = self.model.invoke(prompt)
         rec.tarot = cards
 
-        return {"content": rec.content, "tarot": rec.tarot}
+        return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    def profile_extract(self, full_resume: str) -> dict:
+    @handle_exceptions
+    def profile_extract(self, full_resume: str, repetition: int = 0) -> dict:
         """
         Используется для заполнения базы данных для нового кандидата
 
@@ -216,14 +241,15 @@ class Api:
         ).format(resume_text = full_resume)
 
         rec = self.model.invoke(prompt).content
-        rec = process_tarot_data(rec)
+        rec = date_parsing(rec)
 
         rec['summary_by_resume'] = self.summ_rec(full_resume)
 
         return rec
     
 
-    def feedback(self, candidate_name: str, feedback_type: int) -> str: 
+    @handle_exceptions
+    def feedback(self, candidate_name: str, feedback_type: int, repetition: int = 0) -> str: 
         """
         Функция генерирует фидбек для кандидата, учитывая положительный или
         отрицаьельный результат найма
@@ -231,7 +257,7 @@ class Api:
         candidate_name = ФИО кандидата
         feedback_type = 1/0, в зависимости от готовности взять на работа
 
-        return -> готовый филбек
+        return -> готовый фидбек
         """
         text_prompt = self.data['feedback']
 
@@ -242,12 +268,34 @@ class Api:
                 feedback_type=feedback_type)
 
         rec = self.model.invoke(prompt).content
-        return rec
+        return cleaner(rec)
         
 
+    @handle_exceptions
+    def recommendations(self, resume_summary: str, repetition: int = 0) -> dict:
+        """
+        Функция для получения рекомендаций Hr, как лучше всего общаться с пользователем
 
-    def recommendations(self, resume_summary: str) -> dict:
-        return 'Выполняется recommendations'
+        resume_summary -> суммаризированное резюме
+
+        return -> рекомендация на основе карт таро
+        """
+
+        text_prompt = self.data['recommendations']
+        taro_spread = self.tarot_spread(resume_summary)
+        cards = taro_spread['tarot']
+
+        prompt = PromptTemplate(
+            template=text_prompt,
+            input_variables=["cards", "full_taro_spread"]
+        ).format(cards = cards,
+                full_taro_spread = taro_spread['content'])
+        
+        rec = self.model.invoke(prompt)
+        rec.tarot = taro_spread['tarot']
+        
+        return {"content": cleaner(rec.content), "tarot": rec.tarot}
+    
 
 
         

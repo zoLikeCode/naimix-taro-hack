@@ -33,12 +33,13 @@ class Question(BaseModel): #Запрос с использованием воп�
     user_question: str = "Любит - Не любит"
 
 
-class summarize_tarot_spread(BaseModel): # Запрос с использованием полного расклада таро
+class TarotSpread(BaseModel): # Запрос с использованием полного расклада таро
     taro_spred: str = "Полный расклад таро"
 
 class FeedBack(BaseModel):
     candidate_name: str = "ФИО кандидата",
     feedback_type: int =  0
+
 
 
 @app.get("/")
@@ -70,7 +71,7 @@ async def summ_rec(request: FullResume):
 
 # Суммаризированный расклад Таро по персональной информации пользователя +
 @app.post("/summarize_tarot_spread")
-async def summ_tarot(request: summarize_tarot_spread):
+async def summ_tarot(request: TarotSpread):
     try:
         summary = chat.summ_tarot_full(request.taro_spred)
         return summary
@@ -114,9 +115,9 @@ async def question_tarot_spread(request: Question):
 
 #создание карты компетенции
 @app.post("/competency_map")
-async def competency_map(request: SummResume):
+async def competency_map(request: TarotSpread):
     try:
-        rec = chat.competency_map(request.resume_summary)
+        rec = chat.competency_map(request.taro_spred)
         return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
