@@ -11,7 +11,8 @@ import asyncio
 from fastapi import HTTPException
 from langchain.chains import LLMChain, SequentialChain
 from langchain.prompts import PromptTemplate
-from langchain_mistralai.chat_models import ChatMistralAI
+#from langchain_mistralai.chat_models import ChatMistralAI
+from yandex_chain import YandexLLM
 from logging.handlers import RotatingFileHandler
 import contextvars
 import json
@@ -45,13 +46,20 @@ def handle_exceptions(func):
             
     return wrapper
                 
+class Wrapper: #класс, что бы если вы измените Yandex на другую LLM поддерживаемую langchain - не пришлось много менять.
+    def __init__(self, model):
+        self.model = model
 
+    def invoke(self, question):
+        return {"content": self.model(question)}
 
 
 class Api:
-    def __init__(self, API_KEY):
+    def __init__(self, API_KEY, FOLDER_ID):
         self.data = parse_txt_files('prompts/')
-        self.model = ChatMistralAI(api_key = API_KEY, model_name = 'ministral-8b-latest')
+        #self.model = ChatMistralAI(api_key = API_KEY, model_name = 'ministral-8b-latest')
+        self.LLM = YandexLLM(folder_id=FOLDER_ID, api_key=API_KEY)
+        self.model = Wrapper(self.LLM)
         
 
     
@@ -92,9 +100,9 @@ class Api:
         ).format(sum_resume=resume_summary, cards=cards)
 
         rec = self.model.invoke(prompt)
-        rec.tarot = cards
+        rec['tarot'] = cards
 
-        return {"content": cleaner(rec.content), "tarot": rec.tarot}
+        return {"content": cleaner(rec['content']), "tarot": rec['tarot']}
     
 
     @handle_exceptions
@@ -117,7 +125,7 @@ class Api:
 
 
         return{
-            "content": cleaner(rec.content),
+            "content": cleaner(rec['content']),
             "tarot": full_taro_spread['tarot']
         }
 
@@ -138,9 +146,9 @@ class Api:
         ).format(sum_resume=resume_summary, cards=cards)
 
         rec = self.model.invoke(prompt)
-        rec.tarot = cards
+        rec['tarot'] = cards
 
-        return {"content": cleaner(rec.content), "tarot": rec.tarot}
+        return {"content": cleaner(rec['content']), "tarot": rec['tarot']}
     
 
     @handle_exceptions
@@ -159,9 +167,9 @@ class Api:
         ).format(cards=cards, question=question)
 
         rec = self.model.invoke(prompt)
-        rec.tarot = cards
+        rec['tarot'] = cards
 
-        return {"content": cleaner(rec.content), "tarot": rec.tarot}
+        return {"content": cleaner(rec['content']), "tarot": rec['tarot']}
     
 
     @handle_exceptions
@@ -180,9 +188,9 @@ class Api:
         ).format(cards=cards)
 
         rec = self.model.invoke(prompt)
-        rec.tarot = cards
+        rec['tarot'] = cards
 
-        return {"content": cleaner(rec.content), "tarot": rec.tarot}
+        return {"content": cleaner(rec['content']), "tarot": rec['tarot']}
     
 
     @handle_exceptions
@@ -202,10 +210,10 @@ class Api:
         ).format(full_taro_spread = taro_spred)
 
         rec = self.model.invoke(prompt)
-        rec.content = date_parsing(rec.content)
+        rec['content'] = date_parsing(rec['content'])
         
 
-        return {"content": rec.content}
+        return {"content": rec['content']}
     
 
     @handle_exceptions
@@ -226,9 +234,9 @@ class Api:
         ).format(resume_text=full_resume, cards=cards)
 
         rec = self.model.invoke(prompt)
-        rec.tarot = cards
+        rec['tarot'] = cards
 
-        return {"content": cleaner(rec.content), "tarot": rec.tarot}
+        return {"content": cleaner(rec['content']), "tarot": rec['tarot']}
     
 
     @handle_exceptions
@@ -270,8 +278,9 @@ class Api:
         ).format(candidate_name=candidate_name,
                 feedback_type=feedback_type)
 
-        rec = self.model.invoke(prompt).content
-        return cleaner(rec)
+        rec = self.model.invoke(prompt)
+        print(rec)
+        return cleaner(rec['content'])
         
 
     @handle_exceptions
@@ -295,9 +304,9 @@ class Api:
                 full_taro_spread = taro_spread['content'])
         
         rec = self.model.invoke(prompt)
-        rec.tarot = taro_spread['tarot']
+        rec['tarot'] = taro_spread['tarot']
         
-        return {"content": rec.content, "tarot": rec.tarot}
+        return {"content": rec['content'], "tarot": rec['tarot']}
     
     @handle_exceptions
     def compatibility(self, repetition: int = 0) -> dict:
@@ -316,7 +325,7 @@ class Api:
 
         rec = self.model.invoke(prompt)
 
-        return {"content": cleaner(rec.content), "tarot": cards}
+        return {"content": cleaner(rec['content']), "tarot": cards}
 
 
         

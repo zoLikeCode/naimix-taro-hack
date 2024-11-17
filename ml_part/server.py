@@ -1,9 +1,5 @@
-import json
-import logging
 import os
-import uuid
 from datetime import datetime, timedelta
-import contextvars
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -15,10 +11,11 @@ from api import Api
 
 load_dotenv()
 API = os.getenv("MODEL_API")
+ID = os.getenv("FOLDER_ID")
 
 
 app = FastAPI()
-chat = Api(API_KEY=API)
+chat = Api(API_KEY = API, FOLDER_ID = ID)
 
 
 class FullResume(BaseModel): #Запрос с использованием всего резюме
@@ -136,7 +133,7 @@ async def competency_map(request: TarotSpread):
 
 #Заполнение данных профиля +
 @app.post("/profile_extract")
-async def competency_map(request: FullResume):
+async def profile_extract(request: FullResume):
     try:
         print(1)
         rec = chat.profile_extract(full_resume = request.full_resume)
@@ -164,8 +161,9 @@ async def work_history_review(request: FullResume):
 
 #Запрос для генерации ответа пользователю +
 @app.post("/feedback")
-async def feedback(request: FeedBack):
+async def feedback_1(request: FeedBack):
     try:
+        print(1)
         rec = chat.feedback(request.candidate_name, request.feedback_type)
         return rec
     except Exception as ex:
