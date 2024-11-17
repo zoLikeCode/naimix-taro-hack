@@ -85,6 +85,25 @@ async def get_taros(
         'result': result
     }
 
+@app.get('/get_taro/')
+async def get_taro(
+    id : int,
+    status: str,
+    offset: int = 0, 
+    limit: int = 10,
+    db: Session = Depends(get_db)
+    ):
+    result = db.query(models.UserTaro).filter(models.UserTaro.user_profile_id == id)\
+        .filter(models.UserTaro.status == status)\
+        .options(joinedload(models.UserTaro.user_profile))\
+        .offset(offset).limit(limit).first()
+    return {
+        'offset' : offset,
+        'limit' : limit,
+        'result': result
+    }
+
+
 @app.post('/post_answer/')
 async def post_answer(
     question: str = Form(...)
@@ -186,7 +205,12 @@ async def post_taro_spread(
     return db_taro
 
 
-@app.post('/post_competency_map/{id}')
+@app.get('//')
+async def get():
+    pass
+
+
+@app.post('/post_competency_map/')
 async def post(
     id: int,
     db: Session = Depends(get_db)
@@ -219,4 +243,9 @@ async def post(
     db.refresh(db_metrics)
     return db_metrics
 
-
+@app.post('/tarot_one/')
+async def post(
+    id: int,
+    db: Session = Depends(get_db)
+):
+    pass
