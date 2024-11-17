@@ -60,6 +60,11 @@ async def get_profiles(db: Session = Depends(get_db)):
     result = db.query(models.UserProfile).all()
     return result
 
+@app.get('/get_profile/{id}')
+async def get_profile(id:int, db: Session = Depends(get_db)):
+    result = db.query(models.UserProfile).filter(models.UserProfile.user_profile_id == id).first()
+    return result
+
 @app.post('/post_resume/')
 async def post_resume(
     db : Session = Depends(get_db),
