@@ -69,15 +69,33 @@ async def get_profile(id:int, db: Session = Depends(get_db)):
     result = db.query(models.UserProfile).filter(models.UserProfile.user_profile_id == id).first()
     return result
 
-@app.get('/get_taros/')
-async def get_taros(offset: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    result = db.query(models.UserTaro).options(joinedload(models.UserTaro.user_profile))\
+@app.get('/get_taros/{status}')
+async def get_taros(
+    status: str,
+    offset: int = 0, 
+    limit: int = 10,
+    db: Session = Depends(get_db)
+    ):
+    result = db.query(models.UserTaro).filter(models.UserTaro.status == status)\
+        .options(joinedload(models.UserTaro.user_profile))\
         .offset(offset).limit(limit).all()
     return {
         'offset' : offset,
         'limit' : limit,
         'result': result
     }
+
+@app.post('/post_answer/')
+async def post_answer(
+    question: str = Form(...)
+):
+    payload = {
+        'question': question
+    }
+    response = requests.post(f'{API_TARO}/question_tarot_spread', json=payload)
+    data = response.json()
+    return data
+
 
 @app.post('/post_resume/')
 async def post_resume(
@@ -114,7 +132,7 @@ async def post_resume(
     }
     recommendation = requests.post(f'{API_TARO}/recommendations', json=payload_rec)
     rec = recommendation.json()
-
+ 
     db_profile = models.UserProfile(
         full_name = data['name'],
         phone_number = data['phone_number'],
