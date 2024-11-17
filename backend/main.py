@@ -210,7 +210,8 @@ async def get(
     id: int,
     db: Session = Depends(get_db)
 ):
-    info = db.query(models.Metrics).filter(models.Metrics.taro_id == id).first()
+    result = db.query(models.UserTaro).filter(models.UserTaro.user_profile_id == id).first().taro_id
+    info = db.query(models.Metrics).filter(models.Metrics.taro_id == result).first()
     return info
 
 
