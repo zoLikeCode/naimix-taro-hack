@@ -28,7 +28,7 @@ def handle_exceptions(func):
     """
     @wraps(func)
     def wrapper(*args, **kwargs):
-        repetition  = kwargs.get('repetition') 
+        repetition  = kwargs.get('repetition', 0) 
         try:
             return func(*args, **kwargs)
             
