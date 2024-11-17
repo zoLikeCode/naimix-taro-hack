@@ -9,7 +9,7 @@ services:
     depends_on:
       - backend
     environment:
-      - WATCHPACK_POLLING=true
+      - WATCHPACK_POLLING=true 
     deploy:
       resources:
         limits:
