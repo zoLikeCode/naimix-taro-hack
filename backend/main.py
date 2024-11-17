@@ -126,7 +126,7 @@ async def post_resume(
         education = data['education'],
         faculty = data['faculty'],
         experience = data['experience'],
-        recomendation = rec['recomendation'],
+        recomendation = rec['content'],
         summary_by_resume = data['summary_by_resume'],
         job_experience = data['job_experience'],
         about = data['about'],
