@@ -1,4 +1,21 @@
 services:
+  frontend:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+      - rb_front_node_modules:/app/node_modules
+    ports:
+      - '80:80'
+    depends_on:
+      - backend
+    environment:
+      - WATCHPACK_POLLING=true
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 2000M
+    restart: always
   backend:
     build: ./backend
     volumes:
@@ -45,4 +62,5 @@ services:
     restart: always
     
 volumes:
+  rb_front_node_modules:
   pg_data:
