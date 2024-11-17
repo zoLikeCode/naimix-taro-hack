@@ -1,3 +1,6 @@
 .env
 client.py
 readme.md
+requirements1.txt
+__pycache__
+texts/

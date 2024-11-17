@@ -52,9 +52,7 @@ class Api:
     def __init__(self, API_KEY):
         self.data = parse_txt_files('prompts/')
         self.model = ChatMistralAI(api_key = API_KEY, model_name = 'ministral-8b-latest')
-        #self.model = GigaChat(credentials=API_KEY, verify_ssl_certs=False)
-        a = self.model.invoke('Как у тебя дела?')
-        print(a)
+        
 
     
     #Суммаризация резюме

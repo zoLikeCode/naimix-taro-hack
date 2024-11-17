@@ -4,3 +4,5 @@ ml_part/client.py
 start.ps1
 ml_part/test.ipynb
 ml_part/texts
+ml_part/docker-compose.yml
+ml_part/__pycache__
