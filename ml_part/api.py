@@ -25,14 +25,10 @@ def handle_exceptions(func):
     """
     Декоратор для обработки всех ошибок в _chain_*
     """
-    print(111)
     @wraps(func)
     def wrapper(*args, **kwargs):
-        print(1.1)
-        repetition  = kwargs.get('repetition', 0) 
-        print(1.2)
+        repetition  = kwargs.get('repetition') 
         try:
-            print(1.3)
             return func(*args, **kwargs)
             
         except Exception as ex:
@@ -45,6 +41,8 @@ def handle_exceptions(func):
                 return wrapper(*args, **kwargs)
             else:
                 return ex
+            
+    return wrapper
                 
 
 
@@ -56,7 +54,7 @@ class Api:
 
     
     #Суммаризация резюме
-    #@handle_exceptions
+    @handle_exceptions
     def summ_rec(self, full_resume: str, repetition: int = 0) -> str:
         """
         Функция для суммаризации письма
@@ -74,7 +72,7 @@ class Api:
         rec = self.model.invoke(prompt).content
         return cleaner(rec)
     
-    #@handle_exceptions
+    @handle_exceptions
     def tarot_spread(self, resume_summary: str, repetition: int = 0) -> dict:
         """"
         Полный расклад Таро по персональной информации пользователя
@@ -97,7 +95,7 @@ class Api:
         return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    #@handle_exceptions
+    @handle_exceptions
     def summ_tarot_full(self, resume_summary: str, repetition: int = 0) -> dict:
         """"
         Суммаризация таро для 3 карт
@@ -122,7 +120,7 @@ class Api:
         }
 
     
-    #@handle_exceptions
+    @handle_exceptions
     def tarot_one(self, resume_summary: str, repetition: int = 0) -> dict:
         """"
         Функция для ответа на вопрос с 1 картой
@@ -143,7 +141,7 @@ class Api:
         return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    #@handle_exceptions
+    @handle_exceptions
     def question(self, question: str, repetition: int = 0) -> dict:
         """"
         question: str - Вопрос пользователя
@@ -164,7 +162,7 @@ class Api:
         return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    #@handle_exceptions
+    @handle_exceptions
     def forecast(self, repetition: int = 0) -> dict:
         """
         Выдаёт хороший ли сегодня день для найма отрудников на основании 3 карт
@@ -185,7 +183,7 @@ class Api:
         return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    #@handle_exceptions
+    @handle_exceptions
     def competency_map(self, taro_spred: str, repetition: int = 0) -> dict:
         """
         Создание компетенционной карты
@@ -208,7 +206,7 @@ class Api:
         return {"content": rec.content}
     
 
-    #@handle_exceptions
+    @handle_exceptions
     def work_history_review(self, full_resume: str, repetition: int = 0) -> dict:
         """
         Создание компетенционной карты
@@ -231,7 +229,7 @@ class Api:
         return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    #@handle_exceptions
+    @handle_exceptions
     def profile_extract(self, full_resume: str, repetition: int = 0) -> dict:
         """
         Используется для заполнения базы данных для нового кандидата
@@ -257,7 +255,7 @@ class Api:
         return rec
     
 
-    #@handle_exceptions
+    @handle_exceptions
     def feedback(self, candidate_name: str, feedback_type: int, repetition: int = 0) -> str: 
         """
         Функция генерирует фидбек для кандидата, учитывая положительный или
@@ -280,7 +278,7 @@ class Api:
         return cleaner(rec)
         
 
-    #@handle_exceptions
+    @handle_exceptions
     def recommendations(self, resume_summary: str, repetition: int = 0) -> dict:
         """
         Функция для получения рекомендаций Hr, как лучше всего общаться с пользователем
