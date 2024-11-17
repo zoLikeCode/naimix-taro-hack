@@ -69,7 +69,7 @@ async def get_profile(id:int, db: Session = Depends(get_db)):
     result = db.query(models.UserProfile).filter(models.UserProfile.user_profile_id == id).first()
     return result
 
-@app.get('/get_taros/{status}')
+@app.get('/get_taros/')
 async def get_taros(
     status: str,
     offset: int = 0, 
