@@ -11,7 +11,6 @@ import asyncio
 from fastapi import HTTPException
 from langchain.chains import LLMChain, SequentialChain
 from langchain.prompts import PromptTemplate
-#from langchain_mistralai.chat_models import ChatMistralAI
 from yandex_chain import YandexLLM
 from logging.handlers import RotatingFileHandler
 import contextvars

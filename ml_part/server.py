@@ -7,7 +7,6 @@ from logging.handlers import RotatingFileHandler
 from pydantic import BaseModel
 import uvicorn
 from api import Api
-#from mistral_api import MistralChat, setup_logger
 
 load_dotenv()
 API = os.getenv("MODEL_API")
