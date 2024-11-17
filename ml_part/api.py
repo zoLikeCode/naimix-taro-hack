@@ -21,24 +21,29 @@ from tarot import get_tarot, parse_txt_files, date_parsing, cleaner
 
 
 
-def handle_exceptions(func):
-    """
-    Декоратор для обработки всех ошибок в _chain_*
-    """
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        repetition  = kwargs.get('repetition', 0) 
-        try:
-            return func(*args, **kwargs)
-        except Exception as ex:
-            if repetition  < 5:  
-                wait_time = 1 + repetition  / 10
-                time.sleep(wait_time) 
-                repetition += 1
-                kwargs['repetition'] = repetition
-                return wrapper(*args, **kwargs)
-            else:
-                return ex
+# def handle_exceptions(func):
+#     """
+#     Декоратор для обработки всех ошибок в _chain_*
+#     """
+#     @wraps(func)
+#     def wrapper(*args, **kwargs):
+#         print(1.1)
+#         repetition  = kwargs.get('repetition', 0) 
+#         print(1.2)
+#         try:
+#             print(1.3)
+#             return func(*args, **kwargs)
+            
+#         except Exception as ex:
+            
+#             if repetition  < 5:  
+#                 wait_time = 1 + repetition  / 10
+#                 time.sleep(wait_time) 
+#                 repetition += 1
+#                 kwargs['repetition'] = repetition
+#                 return wrapper(*args, **kwargs)
+#             else:
+#                 return ex
                 
 
 
@@ -50,7 +55,7 @@ class Api:
 
     
     #Суммаризация резюме
-    @handle_exceptions
+    #@handle_exceptions
     def summ_rec(self, full_resume: str, repetition: int = 0) -> str:
         """
         Функция для суммаризации письма
@@ -68,7 +73,7 @@ class Api:
         rec = self.model.invoke(prompt).content
         return cleaner(rec)
     
-    @handle_exceptions
+    #@handle_exceptions
     def tarot_spread(self, resume_summary: str, repetition: int = 0) -> dict:
         """"
         Полный расклад Таро по персональной информации пользователя
@@ -91,7 +96,7 @@ class Api:
         return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    @handle_exceptions
+    #@handle_exceptions
     def summ_tarot_full(self, resume_summary: str, repetition: int = 0) -> dict:
         """"
         Суммаризация таро для 3 карт
@@ -116,7 +121,7 @@ class Api:
         }
 
     
-    @handle_exceptions
+    #@handle_exceptions
     def tarot_one(self, resume_summary: str, repetition: int = 0) -> dict:
         """"
         Функция для ответа на вопрос с 1 картой
@@ -137,7 +142,7 @@ class Api:
         return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    @handle_exceptions
+    #@handle_exceptions
     def question(self, question: str, repetition: int = 0) -> dict:
         """"
         question: str - Вопрос пользователя
@@ -179,7 +184,7 @@ class Api:
         return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    @handle_exceptions
+    #@handle_exceptions
     def competency_map(self, taro_spred: str, repetition: int = 0) -> dict:
         """
         Создание компетенционной карты
@@ -202,7 +207,7 @@ class Api:
         return {"content": rec.content}
     
 
-    @handle_exceptions
+    #@handle_exceptions
     def work_history_review(self, full_resume: str, repetition: int = 0) -> dict:
         """
         Создание компетенционной карты
@@ -225,7 +230,7 @@ class Api:
         return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
 
-    @handle_exceptions
+    #@handle_exceptions
     def profile_extract(self, full_resume: str, repetition: int = 0) -> dict:
         """
         Используется для заполнения базы данных для нового кандидата
@@ -233,22 +238,25 @@ class Api:
         full_resume -> полное резюме
         return -> словарь с всеми данными
         """
+        print(2)
         text_prompt = self.data['profile_extract']
         full_resume = full_resume
+        print(3)
         prompt = PromptTemplate (
             template=text_prompt,
             input_variables=["resume_text"]
         ).format(resume_text = full_resume)
-
+        print(4)
         rec = self.model.invoke(prompt).content
+        print(5)
         rec = date_parsing(rec)
-
+        print(6)
         rec['summary_by_resume'] = self.summ_rec(full_resume)
-
+        print(7)
         return rec
     
 
-    @handle_exceptions
+    #@handle_exceptions
     def feedback(self, candidate_name: str, feedback_type: int, repetition: int = 0) -> str: 
         """
         Функция генерирует фидбек для кандидата, учитывая положительный или
@@ -271,7 +279,7 @@ class Api:
         return cleaner(rec)
         
 
-    @handle_exceptions
+    #@handle_exceptions
     def recommendations(self, resume_summary: str, repetition: int = 0) -> dict:
         """
         Функция для получения рекомендаций Hr, как лучше всего общаться с пользователем

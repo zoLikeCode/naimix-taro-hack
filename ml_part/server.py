@@ -127,7 +127,8 @@ async def competency_map(request: TarotSpread):
 @app.post("/profile_extract")
 async def competency_map(request: FullResume):
     try:
-        rec = chat.profile_extract(request.full_resume)
+        print(1)
+        rec = chat.profile_extract(full_resume = request.full_resume)
         return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
