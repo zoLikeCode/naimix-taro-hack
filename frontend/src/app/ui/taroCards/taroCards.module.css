@@ -15,3 +15,15 @@
   font-weight: 700;
   line-height: 150px;
 }
+
+.image {
+  position: absolute;
+  width: 136.5px;
+  height: 223.6px;
+  margin-left: 0px;
+  content: url('../../../../public/backTaroCards.png');
+}
+
+.check {
+  display: none;
+}

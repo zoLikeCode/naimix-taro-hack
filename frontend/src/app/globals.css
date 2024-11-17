@@ -23,9 +23,31 @@ body {
 }
 
 .main__header {
+  margin-top: 19px;
   width: 100vw;
   height: 60px;
-  background-color: azure;
+  display: flex;
+  justify-content: center;
+}
+
+.main__header__button {
+  cursor: pointer;
+  margin-right: 27px;
+  border: none;
+  background-color: transparent;
+}
+
+.main__header__button div {
+  width: 24px;
+  height: 24px;
+  content: url('../../public/iconMenu.png');
+}
+
+.main__nav {
+  width: 1140px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .main__notfound {
@@ -35,4 +57,20 @@ body {
 
 .main__notfound p {
   margin-bottom: 10px;
+}
+
+.main__header__logo {
+  width: 268px;
+  height: 47px;
+  content: url('../../public/logo.png');
+}
+
+a {
+  text-decoration: none;
+}
+
+.main__back__text {
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  margin-left: 40px;
 }
