@@ -69,6 +69,16 @@ async def get_profile(id:int, db: Session = Depends(get_db)):
     result = db.query(models.UserProfile).filter(models.UserProfile.user_profile_id == id).first()
     return result
 
+@app.get('/get_taros/')
+async def get_taros(offset: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    result = db.query(models.UserTaro).options(joinedload(models.UserTaro.user_profile))\
+        .offset(offset).limit(limit).all()
+    return {
+        'offset' : offset,
+        'limit' : limit,
+        'result': result
+    }
+
 @app.post('/post_resume/')
 async def post_resume(
     db : Session = Depends(get_db),
@@ -104,6 +114,8 @@ async def post_resume(
         phone_number = data['phone_number'],
         salary = data['salary'],
         email = data['email'],
+        birthday = data['birthday'],
+        prof = data['prof'],
         city = data['city'],
         education = data['education'],
         faculty = data['faculty'],
