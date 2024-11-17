@@ -1,0 +1,92 @@
+.main__container {
+  margin-top: 19px;
+  margin-bottom: 35px;
+  width: 1140px;
+  height: 58px;
+  border-radius: 8px;
+  background: rgb(240, 246, 250);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  z-index: 1000;
+}
+
+.button__popup {
+  cursor: pointer;
+  margin-right: 10px;
+  width: 155px;
+  height: 36px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  background: rgb(255, 255, 255);
+}
+
+.button__popup__count {
+  cursor: pointer;
+  margin-right: 10px;
+  width: 64px;
+  height: 36px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  background: rgb(255, 255, 255);
+}
+
+.form__content {
+  margin-left: 9px;
+  margin-right: 15px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  width: 284px;
+  height: 36px;
+  border: 1px solid rgb(203, 213, 225);
+  border-radius: 12px;
+  background: rgb(255, 255, 255);
+}
+
+.input__content {
+  width: 260px;
+  border: none;
+  outline: none;
+  color: rgb(148, 163, 184);
+  font-family: Graphik LCG;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.input__content:active {
+  border: none;
+}
+
+.popupfilter__experience {
+  position: absolute;
+  margin-left: 308px;
+  margin-top: 75px;
+}
+
+.popupfilter__employment {
+  position: absolute;
+  margin-left: 473px;
+  margin-top: 75px;
+}
+
+.popupFilter__schedule {
+  position: absolute;
+  margin-left: 638px;
+  margin-top: 75px;
+}
+
+.popupFilter__count {
+  position: absolute;
+  margin-left: 803px;
+  margin-top: 75px;
+}
+
+.popupFilter__sort {
+  position: absolute;
+  margin-left: 877px;
+  margin-top: 75px;
+}

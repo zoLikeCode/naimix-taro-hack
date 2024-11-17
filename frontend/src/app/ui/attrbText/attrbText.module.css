@@ -1,0 +1,47 @@
+.main__container {
+  width: 1140px;
+  height: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 23px;
+  z-index: -100;
+}
+
+.main__container li {
+  list-style: none;
+  color: rgb(0, 0, 0);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.main__container span {
+  position: relative;
+  top: 3px;
+}
+
+.salary__text {
+  margin-left: 81px;
+}
+
+.exp__text {
+  margin-left: 49px;
+}
+
+.rask__text {
+  margin-left: 45px;
+  margin-right: 59px;
+}
+
+.acc__text {
+  margin-right: 53px;
+}
+
+.emp__text {
+  margin-right: 82px;
+}
+
+.contacts__text {
+  margin-right: 124px;
+}

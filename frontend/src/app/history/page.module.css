@@ -1,0 +1,78 @@
+.main__container {
+  padding: 33px 64px 25px 30px;
+  width: 1140px;
+  border-radius: 8px;
+  background: rgb(240, 246, 250);
+}
+
+.main__content {
+  padding: 0px 15px;
+  margin-bottom: 10px;
+  width: 1100px;
+  height: 56px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 8px;
+  background: rgb(255, 255, 255);
+}
+
+.parcel__button {
+  padding: 5px 8.5px;
+  cursor: pointer;
+  height: 28px;
+  font-family: Graphik LCG;
+  border-radius: 4px;
+  background: VAR(--light-orange-color);
+  border: none;
+  outline: none;
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.main__content:last-child {
+  margin-bottom: 0px;
+}
+
+.main__content b {
+  color: rgb(0, 0, 0);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.main__date {
+  margin-left: 30px;
+}
+
+.main__name {
+  margin-left: 39px;
+}
+
+.main__prof {
+  margin-left: 34px;
+}
+
+.main_exp {
+  margin-left: 120px;
+}
+
+.city {
+  margin-left: 110px;
+}
+
+.button {
+  margin-left: 80px;
+  cursor: pointer;
+  border-radius: 4px;
+  width: 144px;
+  height: 28px;
+  background: rgb(242, 84, 48);
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 400;
+}

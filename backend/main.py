@@ -70,14 +70,51 @@ async def get_profile(id:int, db: Session = Depends(get_db)):
     return result
 
 @app.get('/get_taros/')
-async def get_taros(offset: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    result = db.query(models.UserTaro).options(joinedload(models.UserTaro.user_profile))\
+async def get_taros(
+    status: str,
+    offset: int = 0, 
+    limit: int = 10,
+    db: Session = Depends(get_db)
+    ):
+    result = db.query(models.UserTaro).filter(models.UserTaro.status == status)\
+        .options(joinedload(models.UserTaro.user_profile))\
         .offset(offset).limit(limit).all()
     return {
         'offset' : offset,
         'limit' : limit,
         'result': result
     }
+
+@app.get('/get_taro/')
+async def get_taro(
+    id : int,
+    status: str,
+    offset: int = 0, 
+    limit: int = 10,
+    db: Session = Depends(get_db)
+    ):
+    result = db.query(models.UserTaro).filter(models.UserTaro.user_profile_id == id)\
+        .filter(models.UserTaro.status == status)\
+        .options(joinedload(models.UserTaro.user_profile))\
+        .offset(offset).limit(limit).first()
+    return {
+        'offset' : offset,
+        'limit' : limit,
+        'result': result
+    }
+
+
+@app.post('/post_answer/')
+async def post_answer(
+    question: str = Form(...)
+):
+    payload = {
+        'question': question
+    }
+    response = requests.post(f'{API_TARO}/question_tarot_spread', json=payload)
+    data = response.json()
+    return data
+
 
 @app.post('/post_resume/')
 async def post_resume(
@@ -114,7 +151,7 @@ async def post_resume(
     }
     recommendation = requests.post(f'{API_TARO}/recommendations', json=payload_rec)
     rec = recommendation.json()
-
+ 
     db_profile = models.UserProfile(
         full_name = data['name'],
         phone_number = data['phone_number'],
@@ -139,19 +176,18 @@ async def post_resume(
 
     return {'message': 'Сохранение резюме и создание профиля прошло успешно.'}
 
-@app.post("/post_taro_spread/{taro_status}/{id}")
+@app.post("/post_taro_spread/")
 async def post_taro_spread(
     taro_status: str,
     id: int,
     db: Session = Depends(get_db)
 ):
     user_profile = db.query(models.UserProfile).filter(models.UserProfile.user_profile_id == id).first()
-
     payload = {
         'full_resume': user_profile.summary_by_resume
     }
     if taro_status == 'compatibility':
-        response = requests.post(f'{API_TARO}/compatibility', json=payload)
+        response = requests.get(f'{API_TARO}/compatibility')
     else:
         response = requests.post(f'{API_TARO}/tarot_spread', json=payload)
     data = response.json()
@@ -169,7 +205,17 @@ async def post_taro_spread(
     return db_taro
 
 
-@app.post('/post_competency_map/{id}')
+@app.get('/get_competency/')
+async def get(
+    id: int,
+    db: Session = Depends(get_db)
+):
+    result = db.query(models.UserTaro).filter(models.UserTaro.user_profile_id == id).first().taro_id
+    info = db.query(models.Metrics).filter(models.Metrics.taro_id == result).first()
+    return info
+
+
+@app.post('/post_competency_map/')
 async def post(
     id: int,
     db: Session = Depends(get_db)
@@ -202,4 +248,9 @@ async def post(
     db.refresh(db_metrics)
     return db_metrics
 
-
+@app.post('/tarot_one/')
+async def post(
+    id: int,
+    db: Session = Depends(get_db)
+):
+    pass

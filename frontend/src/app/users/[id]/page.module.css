@@ -29,6 +29,7 @@
   height: 200px;
   border-radius: 100%;
   background: rgb(217, 217, 217);
+  content: url('../../../../public/avatar.jpg');
 }
 
 .info__button__list {
@@ -222,7 +223,7 @@
 
 .info__works {
   margin-left: 30px;
-  padding: 20px;
+  padding: 20px 20px 0px 20px;
   width: 294px;
   border-radius: 16px;
   background: rgb(255, 255, 255);
@@ -245,6 +246,31 @@
   line-height: 14px;
 }
 
+.more__info__works {
+  position: relative;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  color: rgb(89, 89, 89);
+  font-family: Graphik LCG;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  bottom: 30px;
+}
+
+.more__info__up {
+  margin-left: 185px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  color: rgb(89, 89, 89);
+  font-family: Graphik LCG;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+}
+
 .taro__container {
   display: flex;
   flex-direction: row;
@@ -255,13 +281,23 @@
 }
 
 .taro__lists {
-  margin: 136px 89px 44px 81px;
+  margin: 136px 93px 44px 81px;
   width: 516px;
   height: 471px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+}
+
+.taro__lists_fast {
+  margin: 136px 93px 44px 81px;
+  width: 516px;
+  height: 471px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .taro__chooses {
@@ -272,18 +308,41 @@
 }
 
 .taro__buttons__container {
-  width: 343px;
+  width: 520px;
   position: absolute;
-  margin-top: 455px;
-  margin-left: 182px;
+  margin-top: 420px;
+  margin-left: 83px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
+.taro__forms {
+  padding: 8px 12px;
+  margin-left: 82px;
+  margin-top: 480px;
+  position: absolute;
+  width: 520px;
+  height: 36px;
+  border: 1px solid rgb(203, 213, 225);
+  border-radius: 12px;
+  background: rgb(255, 255, 255);
+}
+
+.taro__inputs {
+  width: 490px;
+  color: rgb(148, 163, 184);
+  font-family: Graphik LCG;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  border: none;
+  outline: none;
+}
+
 .taro__button {
   cursor: pointer;
-  width: 141px;
+  width: 227px;
   height: 28px;
   text-align: center;
   border-radius: 4px;
@@ -334,6 +393,10 @@
   flex-direction: column;
   border-radius: 8px;
   background-color: VAR(--light-cyan-color);
+}
+
+.parcel__container p {
+  margin-bottom: 10px;
 }
 
 .h5__text {
@@ -399,4 +462,39 @@
 .best__match__container h5 {
   margin-left: 20px;
   margin-bottom: 33px;
+}
+
+.more__info__container {
+  width: 300px;
+}
+
+.more__info__container__helper {
+  width: 385px;
+  height: 56px;
+  display: flex;
+}
+
+.more__info__container__helper__image {
+  content: url('../../../../public/taroCards.png');
+  margin-right: 31px;
+}
+
+.more__info__container__helper p {
+  text-align: center;
+  color: rgb(89, 89, 89);
+  font-family: Graphik LCG;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.more__info__radar {
+  position: relative;
+  right: 200px;
+}
+
+.noactive {
+  display: none;
+  width: 0px;
+  height: 0px;
 }

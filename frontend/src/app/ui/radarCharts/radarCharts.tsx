@@ -13,6 +13,8 @@ import { Radar } from 'react-chartjs-2';
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
 const RadarCharts = ({ points }: { points: number[] }) => {
+  console.log(points);
+
   const data = {
     labels: [
       'Стрессоустойчивость',
@@ -24,13 +26,13 @@ const RadarCharts = ({ points }: { points: number[] }) => {
       'Профессиональная компетентность',
       'Умение принимать решения',
       'Трудолюбивость',
-      'Организаторские способности',
+      'Координирование',
       'Результативность труда',
       'Работа в команде',
     ],
     datasets: [
       {
-        data: [3, 1, 2, 6, 9, 3.4, 9, 5.4, 7, 8, 5.3, 1.1],
+        data: points,
         backgroundColor: 'rgba(242, 84, 48, 0.2)',
         borderColor: 'rgba(242, 84, 48, 1)',
         borderWidth: 1,
@@ -58,7 +60,7 @@ const RadarCharts = ({ points }: { points: number[] }) => {
     },
   };
   return (
-    <div style={{ width: '500px', height: '500px', margin: '0 auto' }}>
+    <div style={{ width: '550px', height: '550px', margin: '0 auto' }}>
       <Radar data={data} options={options} />
     </div>
   );
