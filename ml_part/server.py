@@ -164,7 +164,7 @@ async def feedback(request: FeedBack):
 
 
 
-#Рекомендательная система
+#Рекомендательная система +
 @app.post("/recommendations")
 async def recommendations(request: SummResume):
     try:
@@ -172,6 +172,10 @@ async def recommendations(request: SummResume):
         return rec
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Произошла ошибка запроса: {ex}")
+
+
+
+
 
 
 

@@ -303,6 +303,9 @@ class Api:
         
         return {"content": cleaner(rec.content), "tarot": rec.tarot}
     
+    @handle_exceptions
+    def compatibility(self):
+    
 
 
         
